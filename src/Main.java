@@ -7,6 +7,9 @@
 import cmd.RunJ48ClassifierCommand;
 import cmd.RunNaiveBayesClassifierCommand;
 import cmd.RunLinearRegressionCommand;
+import cmd.RunSMORegressionCommand;
+import cmd.RunSMORegressionAdvanceCommand;
+
 //import cmd.RunOneRClassifierCommand;
 //import cmd.VisualizeCorrelationMatrixCommand;
 
@@ -37,11 +40,19 @@ public class Main {
 		(new RunLinearRegressionCommand()).exec();
 	}
 
+	public static void SMORegression() {
+		(new RunSMORegressionCommand()).exec();
+	}
+
+	public static void SMORegressionAdvance() {(new RunSMORegressionAdvanceCommand()).exec();}
+
 	public static void main(String args[]) {
 		preprocessing();
 //		zeroR();
 		j48();
 		naiveBayes();
 		linearRegression();
+		SMORegression();
+		SMORegressionAdvance();
 	}
 }
