@@ -7,7 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Weka-3-8-61" level="project" />
-    <orderEntry type="library" name="mtj-1.0.41" level="project" />
+    <orderEntry type="library" name="netlib-java-1.1" level="project" />
+    <orderEntry type="library" name="Weka-3-8-6" level="project" />
+    <orderEntry type="library" name="mtj-1.0.4" level="project" />
   </component>
 </module>

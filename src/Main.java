@@ -4,29 +4,20 @@
 //import cmd.OriginalCsv2ArffCommand;
 //import cmd.RemoveOutlierAndExtremeDataCommand;
 //import cmd.RemoveUselessAttributesCommand;
-import cmd.RunJ48ClassifierCommand;
-import cmd.RunNaiveBayesClassifierCommand;
-import cmd.RunLinearRegressionCommand;
-import cmd.RunSMORegressionCommand;
-import cmd.RunSMORegressionAdvanceCommand;
+import cmd.*;
 
 //import cmd.RunOneRClassifierCommand;
 //import cmd.VisualizeCorrelationMatrixCommand;
 
 public class Main {
 	public static void preprocessing() {
-//		(new OriginalCsv2ArffCommand()).exec();
-//		(new RemoveUselessAttributesCommand()).exec();
-//		(new HandleMissingDataCommand()).exec();
-//		(new RemoveOutlierAndExtremeDataCommand()).exec();
-//		(new CleanDataCommand()).exec();
-//		(new VisualizeCorrelationMatrixCommand()).exec();
-//		(new DiscretizeAttributesCommand()).exec();
+		(new ReadCSVFileCommand()).exec();
+		(new VisualizeCorrelationMatrixCommand()).exec();
 	}
 
-//	public static void zeroR() {
-//		(new RunOneRClassifierCommand()).exec();
-//	}
+	public static void zeroR() { (new RunZeroRClassifierCommand()).exec();}
+
+	public static void OneR() { (new RunOneRClassifierCommand()).exec();}
 
 	public static void j48() {
 		(new RunJ48ClassifierCommand()).exec();
@@ -48,7 +39,8 @@ public class Main {
 
 	public static void main(String args[]) {
 		preprocessing();
-//		zeroR();
+		zeroR();
+		OneR();
 		j48();
 		naiveBayes();
 		linearRegression();
