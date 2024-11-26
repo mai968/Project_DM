@@ -9,35 +9,45 @@ public class RunNaiveBayesClassifierCommand implements Command {
 	public void exec() {
 		try {
 			// Load the training and test datasets
-			DataSource trainSource = new DataSource("data/String80_90.arff"); // Replace with your training dataset path
+			DataSource trainSource = new DataSource("data/String80_90.arff");
 			Instances trainDataset = trainSource.getDataSet();
-			trainDataset.setClassIndex(trainDataset.numAttributes() - 1); // Set the class index for training data
+			trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
 
-			DataSource testSource = new DataSource("data/String20_90.arff"); // Replace with your testing dataset path
+			DataSource testSource = new DataSource("data/String20_90.arff");
 			Instances testDataset = testSource.getDataSet();
-			testDataset.setClassIndex(testDataset.numAttributes() - 1); // Set the class index for testing data
+			testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
 			// Create and configure Naive Bayes model
 			NaiveBayes model = new NaiveBayes();
-			model.setOptions(new String[] { "-K" }); // Use the default options for Naive Bayes
+			model.setOptions(new String[] { "" });
 
-			// Train the model on the training dataset
+			// Measure time taken to build the model
+			long trainStart = System.nanoTime();
 			model.buildClassifier(trainDataset);
+			long trainEnd = System.nanoTime();
+			double trainTimeSeconds = (trainEnd - trainStart) / 1e9;
 
-			// Evaluate the model on the test dataset
+			// Measure time taken to evaluate the model
+			long testStart = System.nanoTime();
 			Evaluation eval = new Evaluation(trainDataset);
 			eval.evaluateModel(model, testDataset);
+			long testEnd = System.nanoTime();
+			double testTimeSeconds = (testEnd - testStart) / 1e9;
 
-			// Print the model and its confusion matrix
+			// Print the model and its evaluation results
 			System.out.println("=== Naive Bayes Model ===\n");
 			System.out.println(model);
+
+			// Print training and testing time
+			System.out.printf("\nTime taken to build model: %.2f seconds\n", trainTimeSeconds);
+			System.out.printf("Time taken to test model on supplied test set: %.2f seconds\n", testTimeSeconds);
+
 			System.out.println("\n=== Evaluation Results ===");
-			System.out.println(eval.toSummaryString());  // Print evaluation metrics
-			System.out.println(eval.toClassDetailsString());  // Class-level details
+			System.out.println(eval.toSummaryString()); // Print evaluation metrics
+			System.out.println(eval.toClassDetailsString()); // Class-level details
 
 			// Print confusion matrix
-			System.out.println("\n=== Confusion Matrix ===");
-			System.out.println(eval.toMatrixString());  // Print confusion matrix
+			System.out.println(eval.toMatrixString()); // Print confusion matrix
 
 		} catch (Exception e) {
 			e.printStackTrace();

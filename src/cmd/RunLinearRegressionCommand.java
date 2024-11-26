@@ -1,59 +1,52 @@
 package cmd;
 
-
 import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.functions.LinearRegression;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
 public class RunLinearRegressionCommand implements Command {
+
     public void exec() {
         try {
             // Load the training and test datasets
-            DataSource trainSource = new DataSource("data/Num80_90.arff"); // Thay bằng đường dẫn tập train
+            DataSource trainSource = new DataSource("data/Num80_90.arff");
             Instances trainDataset = trainSource.getDataSet();
-            trainDataset.setClassIndex(trainDataset.numAttributes() - 1); // Đặt chỉ số lớp cho tập train
+            trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
 
-            DataSource testSource = new DataSource("data/Num20_90.arff"); // Thay bằng đường dẫn tập test
+            DataSource testSource = new DataSource("data/Num20_90.arff");
             Instances testDataset = testSource.getDataSet();
-            testDataset.setClassIndex(testDataset.numAttributes() - 1); // Đặt chỉ số lớp cho tập test
+            testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
-            // Tạo và cấu hình mô hình Linear Regression
+            // Create and configure the Linear Regression model
             LinearRegression model = new LinearRegression();
-            model.setOptions(new String[] { "-S", "0", "-R", "1.0E-8", "-num-decimal-places", "4" });
+            model.setOptions(new String[] { "-S", "0", "-R", "1.0E-8", "-additional-stats", "-num-decimal-places", "4" });
 
-            // In thông tin mô hình
-            System.out.println("=== Run information ===");
-            System.out.println("Scheme:       " + model.getClass().getName() + " " + String.join(" ", model.getOptions()));
-            System.out.println("Relation:     " + trainDataset.relationName());
-            System.out.println("Instances:    " + trainDataset.numInstances());
-            System.out.println("Attributes:   " + trainDataset.numAttributes());
-            for (int i = 0; i < trainDataset.numAttributes(); i++) {
-                System.out.println("              " + trainDataset.attribute(i).name());
-            }
-            System.out.println("Test mode:    user supplied test set: size unknown (reading incrementally)");
-
-            // Huấn luyện mô hình với tập train
+            // Train the model on the training dataset
+            long startTime = System.nanoTime();
             model.buildClassifier(trainDataset);
+            long endTime = System.nanoTime();
+            double trainingTime = (endTime - startTime) / 1e9; // Time in seconds
 
-            // In mô hình hồi quy tuyến tính
+            // Print the regression model and analysis
             System.out.println("\n=== Classifier model (full training set) ===");
-            System.out.println("\nLinear Regression Model\n");
             System.out.println(model);
 
-
-            // Thời gian huấn luyện mô hình
-            System.out.println("\nTime taken to build model: " + model.toString().length() / 10.0 + " seconds");
-
-            // Đánh giá mô hình với tập test
+            // Evaluate the model on the test dataset
             Evaluation eval = new Evaluation(trainDataset);
             eval.evaluateModel(model, testDataset);
 
-            // In kết quả đánh giá
+            // Print evaluation results
+            System.out.printf("\nTime taken to build model: %.2f seconds\n", trainingTime);
             System.out.println("\n=== Evaluation on test set ===");
-            System.out.println("Time taken to test model on supplied test set: 0 seconds");
+            long testStartTime = System.nanoTime();
+            eval.evaluateModel(model, testDataset);
+            long testEndTime = System.nanoTime();
+            double testTime = (testEndTime - testStartTime) / 1e9; // Time in seconds
 
-            // In tóm tắt kết quả đánh giá
+            System.out.println("Time taken to test model on supplied test set: " + testTime + " seconds");
+
+            // Print summary of evaluation
             System.out.println("\n=== Summary ===");
             System.out.println("Correlation coefficient                  " + eval.correlationCoefficient());
             System.out.println("Mean absolute error                      " + eval.meanAbsoluteError());
@@ -72,6 +65,3 @@ public class RunLinearRegressionCommand implements Command {
         cmd.exec();
     }
 }
-
-
-
