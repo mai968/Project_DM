@@ -7,23 +7,22 @@ import weka.core.Instances;
 public class VisualizeCorrelationMatrixCommand implements Command {
     public void exec() {
         // Load the dataset from the CSV file
-        Instances dataset = Loader.loadCsv("data/cleaned_data_Num.csv"); // Đường dẫn đến tập CSV
+        Instances dataset = Loader.loadCsv("data/cleaned_data_Num.csv");
 
         try {
             CorrelationAttributeEval cEval = new CorrelationAttributeEval();
             System.out.println();
 
-            // In tiêu đề các thuộc tính
+            // Print attribute titles
             for (int i = dataset.numAttributes() - 1; i >= 0; i--) {
                 System.out.print("A[" + i + "]" + " ");
             }
-
             System.out.println();
 
-            // Tính ma trận tương quan
+            // Calculate correlation matrix
             for (int i = dataset.numAttributes() - 1; i >= 0; i--) {
-                dataset.setClassIndex(i); // Đặt thuộc tính i làm class
-                cEval.buildEvaluator(dataset); // Xây dựng bộ đánh giá tương quan
+                dataset.setClassIndex(i);       // Set i attribute as class
+                cEval.buildEvaluator(dataset);  // Building a correlation evaluator
 
                 for (int j = 0; j <= i; j++) {
                     if (j == 0) {

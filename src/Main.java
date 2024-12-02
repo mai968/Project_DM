@@ -1,13 +1,4 @@
-//import cmd.CleanDataCommand;
-//import cmd.DiscretizeAttributesCommand;
-//import cmd.HandleMissingDataCommand;
-//import cmd.OriginalCsv2ArffCommand;
-//import cmd.RemoveOutlierAndExtremeDataCommand;
-//import cmd.RemoveUselessAttributesCommand;
 import cmd.*;
-
-//import cmd.RunOneRClassifierCommand;
-//import cmd.VisualizeCorrelationMatrixCommand;
 
 public class Main {
 	public static void preprocessing() {
@@ -39,8 +30,8 @@ public class Main {
 
 	public static void main(String args[]) {
 		preprocessing();
-		zeroR();
-		OneR();
+//		zeroR();
+//		OneR();
 		j48();
 		naiveBayes();
 		linearRegression();

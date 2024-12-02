@@ -10,12 +10,12 @@ public class ReadCSVFileCommand implements Command {
 
     public void exec() {
         try {
-            // Sử dụng CSVLoader để đọc file CSV
+            // Use CSVLoader to read CSV files
             CSVLoader csvLoader = new CSVLoader();
             csvLoader.setSource(new File(csvFilePath));
             Instances dataset = csvLoader.getDataSet();
 
-            // In dữ liệu ra console
+            // print console
             System.out.println("Number of row: " + dataset.numInstances());
             System.out.println("Number of column: " + dataset.numAttributes());
             System.out.println("Dataset:");

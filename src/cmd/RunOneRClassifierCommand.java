@@ -6,65 +6,55 @@ import weka.classifiers.evaluation.Evaluation;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
-
 public class RunOneRClassifierCommand implements Command {
     public void exec() {
         try {
             // Load the training and test datasets
-            DataSource trainSource = new DataSource("data/String80_90.arff"); // Replace with your training dataset path
+            DataSource trainSource = new DataSource("data/String80_90.arff");
             Instances trainDataset = trainSource.getDataSet();
-            trainDataset.setClassIndex(trainDataset.numAttributes() - 1); // Set the class index for training data
+            trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
 
-
-            DataSource testSource = new DataSource("data/String20_90.arff"); // Replace with your testing dataset path
+            DataSource testSource = new DataSource("data/String20_90.arff");
             Instances testDataset = testSource.getDataSet();
-            testDataset.setClassIndex(testDataset.numAttributes() - 1); // Set the class index for testing data
-
+            testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
             // Create and configure OneR model
             OneR model = new OneR();
             model.setOptions(new String[] { "-B", "6" }); // Use bin size of 6 as an example (default is 6)
 
-
-            // Measure the training time
-            long startTime = System.currentTimeMillis();
+            // Training the model and measure time to build the model
+            long trainStart = System.nanoTime();
             model.buildClassifier(trainDataset); // Train the model
-            long endTime = System.currentTimeMillis();
-            long trainingTime = endTime - startTime;
+            long trainEnd = System.nanoTime();
+            double trainingTime = (trainEnd - trainStart) / 1e9;
 
-
-            // Evaluate the model on the test dataset
+            // Evaluate the model and measure the evaluation time.
             Evaluation eval = new Evaluation(trainDataset);
+            long testStart = System.nanoTime();
             eval.evaluateModel(model, testDataset);
-
+            long testEnd = System.nanoTime();
+            double testingTime = (testEnd - testStart) / 1e9;
 
             // Print the model and its evaluation metrics
             System.out.println("=== OneR Model ===\n");
             System.out.println(model);
+
+            System.out.printf("\nTime taken to build model: %.2f seconds\n", trainingTime);
+            System.out.println("\n=== Evaluation on test set ===");
+            System.out.printf("Time taken to test model on supplied test set: %.2f seconds\n", testingTime);
+
             System.out.println("\n=== Evaluation Results ===");
-            System.out.println(eval.toSummaryString());  // Print evaluation metrics
-            System.out.println(eval.toClassDetailsString());  // Class-level details
-
-
-            // Print confusion matrix
-            System.out.println("\n=== Confusion Matrix ===");
-            System.out.println(eval.toMatrixString());  // Print confusion matrix
-
-
-            // Print training time
-            System.out.println("\n=== Training Time ===");
-            System.out.println("Time taken to train the model: " + trainingTime + " ms");
-
+            System.out.println(eval.toSummaryString());
+            System.out.println(eval.toClassDetailsString());
+            System.out.println(eval.toMatrixString());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     public static void main(String args[]) {
         Command cmd = new RunOneRClassifierCommand();
         cmd.exec();
     }
 }
-

@@ -21,33 +21,31 @@ public class RunNaiveBayesClassifierCommand implements Command {
 			NaiveBayes model = new NaiveBayes();
 			model.setOptions(new String[] { "" });
 
-			// Measure time taken to build the model
+			// Training the model and measure time to build the model
 			long trainStart = System.nanoTime();
 			model.buildClassifier(trainDataset);
 			long trainEnd = System.nanoTime();
-			double trainTimeSeconds = (trainEnd - trainStart) / 1e9;
+			double trainingTime = (trainEnd - trainStart) / 1e9;
 
-			// Measure time taken to evaluate the model
-			long testStart = System.nanoTime();
+			// Evaluate the model and measure the evaluation time.
 			Evaluation eval = new Evaluation(trainDataset);
+			long testStart = System.nanoTime();
 			eval.evaluateModel(model, testDataset);
 			long testEnd = System.nanoTime();
-			double testTimeSeconds = (testEnd - testStart) / 1e9;
+			double testingTime = (testEnd - testStart) / 1e9;
 
 			// Print the model and its evaluation results
 			System.out.println("=== Naive Bayes Model ===\n");
 			System.out.println(model);
 
-			// Print training and testing time
-			System.out.printf("\nTime taken to build model: %.2f seconds\n", trainTimeSeconds);
-			System.out.printf("Time taken to test model on supplied test set: %.2f seconds\n", testTimeSeconds);
+			System.out.printf("\nTime taken to build model: %.2f seconds\n", trainingTime);
+			System.out.println("\n=== Evaluation on test set ===");
+			System.out.printf("Time taken to test model on supplied test set: %.2f seconds\n", testingTime);
 
 			System.out.println("\n=== Evaluation Results ===");
-			System.out.println(eval.toSummaryString()); // Print evaluation metrics
-			System.out.println(eval.toClassDetailsString()); // Class-level details
-
-			// Print confusion matrix
-			System.out.println(eval.toMatrixString()); // Print confusion matrix
+			System.out.println(eval.toSummaryString());
+			System.out.println(eval.toClassDetailsString());
+			System.out.println(eval.toMatrixString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
