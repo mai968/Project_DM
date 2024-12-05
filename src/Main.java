@@ -27,7 +27,7 @@ public class Main {
 	}
 
 	public static void SMORegressionAdvance() {(new RunSMORegressionAdvanceCommand()).exec();}
-
+	public static void evaluationSMORegressionAdvance() {(new EvaluationSMORegressionAdvanceCommand()).exec();}
 	public static void main(String args[]) {
 		preprocessing();
 //		zeroR();
@@ -37,5 +37,6 @@ public class Main {
 		linearRegression();
 		SMORegression();
 		SMORegressionAdvance();
+		evaluationSMORegressionAdvance();
 	}
 }
