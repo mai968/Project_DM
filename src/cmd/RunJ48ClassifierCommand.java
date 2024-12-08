@@ -19,19 +19,30 @@ public class RunJ48ClassifierCommand implements Command {
 			J48 tree = new J48();
 			tree.setOptions(new String[]{"-C", "0.25", "-M", "10"});
 
+			long trainStart = System.nanoTime();
 			tree.buildClassifier(trainDataset);
+			long trainEnd = System.nanoTime();
+			double trainingTime = (trainEnd - trainStart) / 1e9;
 
 			Evaluation eval = new Evaluation(trainDataset);
+			long testStart = System.nanoTime();
+			eval.evaluateModel(tree, testDataset);
+			long testEnd = System.nanoTime();
+			double testingTime = (testEnd - testStart) / 1e9;
+
 			eval.evaluateModel(tree, testDataset);
 
 			System.out.println("=== J48 Model ===\n");
 			System.out.println(tree);
 			System.out.println(tree.graph());
+
+			System.out.printf("\nTime taken to build model: %.2f seconds\n", trainingTime);
+			System.out.println("\n=== Evaluation on test set ===");
+			System.out.printf("Time taken to test model on supplied test set: %.2f seconds\n", testingTime);
+
 			System.out.println("\n=== Evaluation Results ===");
 			System.out.println(eval.toSummaryString());
 			System.out.println(eval.toClassDetailsString());
-
-			System.out.println("\n=== Confusion Matrix ===");
 			System.out.println(eval.toMatrixString());
 
 		} catch (Exception e) {
