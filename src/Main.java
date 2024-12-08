@@ -1,13 +1,4 @@
-//import cmd.CleanDataCommand;
-//import cmd.DiscretizeAttributesCommand;
-//import cmd.HandleMissingDataCommand;
-//import cmd.OriginalCsv2ArffCommand;
-//import cmd.RemoveOutlierAndExtremeDataCommand;
-//import cmd.RemoveUselessAttributesCommand;
 import cmd.*;
-
-//import cmd.RunOneRClassifierCommand;
-//import cmd.VisualizeCorrelationMatrixCommand;
 
 public class Main {
 	public static void preprocessing() {

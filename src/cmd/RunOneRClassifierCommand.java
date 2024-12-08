@@ -10,48 +10,41 @@ import weka.core.converters.ConverterUtils.DataSource;
 public class RunOneRClassifierCommand implements Command {
     public void exec() {
         try {
-            // Load the training and test datasets
-            DataSource trainSource = new DataSource("data/String80_90.arff"); // Replace with your training dataset path
+            DataSource trainSource = new DataSource("data/String80_90.arff");
             Instances trainDataset = trainSource.getDataSet();
-            trainDataset.setClassIndex(trainDataset.numAttributes() - 1); // Set the class index for training data
+            trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
 
 
-            DataSource testSource = new DataSource("data/String20_90.arff"); // Replace with your testing dataset path
+            DataSource testSource = new DataSource("data/String20_90.arff");
             Instances testDataset = testSource.getDataSet();
-            testDataset.setClassIndex(testDataset.numAttributes() - 1); // Set the class index for testing data
+            testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
 
-            // Create and configure OneR model
             OneR model = new OneR();
-            model.setOptions(new String[] { "-B", "6" }); // Use bin size of 6 as an example (default is 6)
+            model.setOptions(new String[] { "-B", "6" });
 
 
-            // Measure the training time
             long startTime = System.currentTimeMillis();
-            model.buildClassifier(trainDataset); // Train the model
+            model.buildClassifier(trainDataset);
             long endTime = System.currentTimeMillis();
             long trainingTime = endTime - startTime;
 
 
-            // Evaluate the model on the test dataset
             Evaluation eval = new Evaluation(trainDataset);
             eval.evaluateModel(model, testDataset);
 
 
-            // Print the model and its evaluation metrics
             System.out.println("=== OneR Model ===\n");
             System.out.println(model);
             System.out.println("\n=== Evaluation Results ===");
-            System.out.println(eval.toSummaryString());  // Print evaluation metrics
-            System.out.println(eval.toClassDetailsString());  // Class-level details
+            System.out.println(eval.toSummaryString());
+            System.out.println(eval.toClassDetailsString());
 
 
-            // Print confusion matrix
             System.out.println("\n=== Confusion Matrix ===");
-            System.out.println(eval.toMatrixString());  // Print confusion matrix
+            System.out.println(eval.toMatrixString());
 
 
-            // Print training time
             System.out.println("\n=== Training Time ===");
             System.out.println("Time taken to train the model: " + trainingTime + " ms");
 
