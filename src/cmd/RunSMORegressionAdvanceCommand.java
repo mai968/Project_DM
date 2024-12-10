@@ -9,19 +9,16 @@ import weka.classifiers.functions.supportVector.Puk;
 public class RunSMORegressionAdvanceCommand implements Command {
     public void exec() {
         try {
-            // Load the training and test datasets
-            DataSource trainSource = new DataSource("data/Num80_90.arff"); // Đường dẫn tập train
+            DataSource trainSource = new DataSource("data/Num80_90.arff");
             Instances trainData = trainSource.getDataSet();
-            trainData.setClassIndex(trainData.numAttributes() - 1); // Cột cuối là nhãn cần dự đoán
+            trainData.setClassIndex(trainData.numAttributes() - 1);
 
-            DataSource testSource = new DataSource("data/Num20_90.arff"); // Đường dẫn tập test
+            DataSource testSource = new DataSource("data/Num20_90.arff");
             Instances testData = testSource.getDataSet();
             testData.setClassIndex(testData.numAttributes() - 1);
 
-            // Create and configure the SMOreg model
             SMOreg smo = new SMOreg();
 
-            // Kernel setup (Puk kernel)
             Puk pukKernel = new Puk();
             pukKernel.setOmega(1.0);
             pukKernel.setSigma(1.0);
@@ -29,20 +26,17 @@ public class RunSMORegressionAdvanceCommand implements Command {
 
             smo.setC(1.0);
 
-            // Training the model and measure time to build the model
             long trainStart = System.nanoTime();
             smo.buildClassifier(trainData);
             long trainEnd = System.nanoTime();
             double trainingTime = (trainEnd - trainStart) / 1e9;
 
-            // Evaluate the model and measure the evaluation time.
             Evaluation eval = new Evaluation(trainData);
             long testStart = System.nanoTime();
             eval.evaluateModel(smo, testData);
             long testEnd = System.nanoTime();
             double testingTime = (testEnd - testStart) / 1e9;
 
-            // Print the SMOreg and analysis
             System.out.println("=== SMOreg Model ===");
             System.out.println(smo); // In thông tin mô hình
 
@@ -51,12 +45,8 @@ public class RunSMORegressionAdvanceCommand implements Command {
             System.out.println("Time taken to test model on supplied test set: " + testingTime + " seconds");
 
             System.out.println("\n=== Evaluation Results ===");
-            System.out.println(eval.toSummaryString("\nSummary:\n", false)); // Kết quả tóm tắt
-//            System.out.println("Correlation coefficient: " + eval.correlationCoefficient());
-//            System.out.println("Mean Absolute Error (MAE): " + eval.meanAbsoluteError());
-//            System.out.println("Root Mean Squared Error (RMSE): " + eval.rootMeanSquaredError());
-//            System.out.println("Relative Absolute Error (%): " + eval.relativeAbsoluteError());
-//            System.out.println("Root Relative Squared Error (%): " + eval.rootRelativeSquaredError());
+            System.out.println(eval.toSummaryString("\nSummary:\n", false));
+
 
         } catch (Exception e) {
             e.printStackTrace();

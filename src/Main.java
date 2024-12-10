@@ -30,8 +30,8 @@ public class Main {
 	public static void evaluationSMORegressionAdvance() {(new EvaluationSMORegressionAdvanceCommand()).exec();}
 	public static void main(String args[]) {
 		preprocessing();
-//		zeroR();
-//		OneR();
+		zeroR();
+		OneR();
 		j48();
 		naiveBayes();
 		linearRegression();

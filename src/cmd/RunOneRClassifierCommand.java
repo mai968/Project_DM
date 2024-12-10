@@ -9,7 +9,6 @@ import weka.core.converters.ConverterUtils.DataSource;
 public class RunOneRClassifierCommand implements Command {
     public void exec() {
         try {
-            // Load the training and test datasets
             DataSource trainSource = new DataSource("data/String80_90.arff");
             Instances trainDataset = trainSource.getDataSet();
             trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
@@ -18,24 +17,20 @@ public class RunOneRClassifierCommand implements Command {
             Instances testDataset = testSource.getDataSet();
             testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
-            // Create and configure OneR model
             OneR model = new OneR();
-            model.setOptions(new String[] { "-B", "6" }); // Use bin size of 6 as an example (default is 6)
+            model.setOptions(new String[] { "-B", "6" });
 
-            // Training the model and measure time to build the model
             long trainStart = System.nanoTime();
             model.buildClassifier(trainDataset); // Train the model
             long trainEnd = System.nanoTime();
             double trainingTime = (trainEnd - trainStart) / 1e9;
 
-            // Evaluate the model and measure the evaluation time.
             Evaluation eval = new Evaluation(trainDataset);
             long testStart = System.nanoTime();
             eval.evaluateModel(model, testDataset);
             long testEnd = System.nanoTime();
             double testingTime = (testEnd - testStart) / 1e9;
 
-            // Print the model and its evaluation metrics
             System.out.println("=== OneR Model ===\n");
             System.out.println(model);
 

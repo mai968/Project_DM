@@ -9,7 +9,6 @@ public class RunLinearRegressionCommand implements Command {
 
     public void exec() {
         try {
-            // Load the training and test datasets
             DataSource trainSource = new DataSource("data/Num80_90.arff");
             Instances trainDataset = trainSource.getDataSet();
             trainDataset.setClassIndex(trainDataset.numAttributes() - 1);
@@ -18,24 +17,20 @@ public class RunLinearRegressionCommand implements Command {
             Instances testDataset = testSource.getDataSet();
             testDataset.setClassIndex(testDataset.numAttributes() - 1);
 
-            // Create and configure the Linear Regression model
             LinearRegression model = new LinearRegression();
             model.setOptions(new String[] { "-S", "0", "-R", "1.0E-8", "-additional-stats", "-num-decimal-places", "4" });
 
-            // Training the model and measure time to build the model
             long trainStart = System.nanoTime();
             model.buildClassifier(trainDataset);
             long trainEnd = System.nanoTime();
             double trainingTime = (trainEnd - trainStart) / 1e9;
 
-            // Evaluate the model and measure the evaluation time.
             Evaluation eval = new Evaluation(trainDataset);
             long testStart = System.nanoTime();
             eval.evaluateModel(model, testDataset);
             long testEnd = System.nanoTime();
             double testingTime = (testEnd - testStart) / 1e9;
 
-            // Print the regression model and analysis
             System.out.println("\n=== Linear Regression Model ===");
             System.out.println(model);
 

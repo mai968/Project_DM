@@ -6,7 +6,7 @@ import weka.core.converters.CSVLoader;
 import java.io.File;
 
 public class ReadCSVFileCommand implements Command {
-    public final static String csvFilePath = "data/cleaned_data_Num.csv"; // Đường dẫn file CSV
+    public final static String csvFilePath = "data/cleaned_data_Num.csv";
 
     public void exec() {
         try {
@@ -15,7 +15,6 @@ public class ReadCSVFileCommand implements Command {
             csvLoader.setSource(new File(csvFilePath));
             Instances dataset = csvLoader.getDataSet();
 
-            // print console
             System.out.println("Number of row: " + dataset.numInstances());
             System.out.println("Number of column: " + dataset.numAttributes());
             System.out.println("Dataset:");
