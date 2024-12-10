@@ -10,7 +10,6 @@ public class ReadCSVFileCommand implements Command {
 
     public void exec() {
         try {
-            // Use CSVLoader to read CSV files
             CSVLoader csvLoader = new CSVLoader();
             csvLoader.setSource(new File(csvFilePath));
             Instances dataset = csvLoader.getDataSet();
