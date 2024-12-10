@@ -17,7 +17,6 @@ public class VisualizeCorrelationMatrixCommand implements Command {
             }
             System.out.println();
 
-            // Calculate correlation matrix
             for (int i = dataset.numAttributes() - 1; i >= 0; i--) {
                 dataset.setClassIndex(i);
                 cEval.buildEvaluator(dataset);
