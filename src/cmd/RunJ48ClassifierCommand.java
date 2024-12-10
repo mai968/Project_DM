@@ -30,6 +30,8 @@ public class RunJ48ClassifierCommand implements Command {
 			long testEnd = System.nanoTime();
 			double testingTime = (testEnd - testStart) / 1e9;
 
+			eval.evaluateModel(tree, testDataset);
+
 			System.out.println("=== J48 Model ===\n");
 			System.out.println(tree);
 			System.out.println(tree.graph());
